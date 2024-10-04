@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: testme
+  name: testme
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testme
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: testme
+    spec:
+      containers:
+      - image: localhost/spring-petclinic
+        name: spring-petclinic
+        resources: {}
+status: {}
