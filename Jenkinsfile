@@ -10,9 +10,6 @@ podTemplate(
 ) {
     node(POD_LABEL) {
         checkout scm
-//        stage('Checkout') {
-//            git branch: 'dora-poc', url: 'https://github.com/andrebrowne/spring-petclinic.git'
-//        }
         stage('Build') {
             container('gradle') {
                 sh 'gradle build -x test -x processTestAot -x processAot'
