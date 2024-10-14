@@ -27,7 +27,8 @@ podTemplate(
         }
         stage('Create Docker Image') {
             container('docker') {
-                sh 'docker build -t spring-petclinic .'
+                sh 'docker build -t dora-poc/spring-petclinic .'
+                sh 'docker images'
             }
         }
         // stage('Deployment Trigger') {
@@ -36,6 +37,7 @@ podTemplate(
         stage('Deploy') {
             withKubeConfig([credentialsId: 'minikube-jenkins-robot-secret']) {
                 sh './linux-amd64/helm upgrade --debug --install --force dora-poc-app dora-poc-app'
+                sh './kubectl rollout status deployment dora-poc-app --timeout=300s'
             }
         }
     }
