@@ -1,6 +1,4 @@
-Now with DORA...
-Now with less llammas
-Now with fixed bug https://github.com/andrebrowne/spring-petclinic/issues/9
+
 
 
               |\      _,,,--,,_
@@ -15,3 +13,8 @@ Now with fixed bug https://github.com/andrebrowne/spring-petclinic/issues/9
  ==================================================================/_/_/_/
 
 :: Built with Spring Boot :: ${spring-boot.version}
+
+Now with DORA...
+Now with less llamas
+Now with fixed bug https://github.com/andrebrowne/spring-petclinic/issues/9
+Now with fixed bug https://github.com/andrebrowne/spring-petclinic/issues/8
