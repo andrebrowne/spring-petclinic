@@ -1,3 +1,13 @@
+// properties([
+//     parameters: [
+//         string(
+//             name: 'namespace',
+//             description: 'Enter your target namespace:',
+//             defaultValue: 'devlake',
+//             trim: true
+//     )]
+// ])
+
 podTemplate(
         inheritFrom: 'default',
         containers: [
@@ -10,6 +20,9 @@ podTemplate(
 ) {
     node(POD_LABEL) {
         checkout scm
+        // stage('Deployment Trigger') {
+        //     input "Trigger deployment?"
+        // }
         stage('Build') {
             container('gradle') {
                 sh 'gradle build -x test -x processTestAot -x processAot'
@@ -22,21 +35,18 @@ podTemplate(
                 sh 'curl -sLO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"'
                 sh 'tar -xvzf helm-v3.16.1-linux-amd64.tar.gz'
                 sh 'chmod 700 linux-amd64/helm kubectl'
-                sh './kubectl config set-context --current --namespace=default'
+                sh './kubectl config set-context --current --namespace=devlake'
+                // echo params.namespace
             }
         }
         stage('Create Docker Image') {
             container('docker') {
                 sh 'docker build -t dora-poc/spring-petclinic .'
-                sh 'docker images'
             }
         }
-        // stage('Deployment Trigger') {
-        //     input "Trigger deployment?"
-        // }
         stage('Deploy') {
             withKubeConfig([credentialsId: 'minikube-jenkins-robot-secret']) {
-                sh './linux-amd64/helm upgrade --debug --install --force dora-poc-app dora-poc-app'
+                sh './linux-amd64/helm --namespace devlake upgrade --debug --install --force --create-namespace dora-poc-app dora-poc-app'
                 sh './kubectl rollout status deployment dora-poc-app --timeout=300s'
             }
         }
